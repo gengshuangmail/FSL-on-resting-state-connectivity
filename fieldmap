@@ -1,1 +1,23 @@
+#!/bin/bash datadir=/Users/zhuyupu/Data/KOA/2021/FC/HC/fmap outdir=/Users/zhuyupu/Data/KOA/2021/FC/HC
 
+sublist=$datadir/list.txt
+
+#取均值 mkdir -p $outdir/MEANmag
+
+for sub in cat $sublist do fslmerge -t $outdir/MEANmag/${sub}_mag4D.nii.gz $datadir/${sub}_mag_e1.nii.gz $datadir/${sub}_mag_e2.nii.gz fslmaths $outdir/MEANmag/${sub}_mag4D.nii.gz -Tmean $outdir/MEANmag/${sub}_magMEAN.nii.gz done#bet mkdir -p $outdir/bet_fm
+
+for sub in cat $sublist do bet2 $outdir/MEANmag/${sub}_magMEAN.nii.gz $outdir/bet_fm/${sub}_mag_brain.nii.gz done
+
+echo 'Finished bet!' #erode the image for sub in cat $sublist do fslmaths $outdir/bet_fm/${sub}_mag_brain.nii.gz -ero $outdir/bet_fm/${sub}_mag_brain_ero.nii.gz done
+
+echo 'Finished erode!'
+
+#check erode reslut cd $outdir/bet_fm slicesdir imglob *
+
+#Processing the fieldmap phase difference image mkdir -p $outdir/RADs or sub in cat $sublist do Fsl_prepare_fieldmap SIEMENS $datadir/${sub}_fmap_ph.nii.gz $outdir/bet_fm/${sub}_mag_brain_ero.nii.gz $outdir/RADs/${sub}_brain_fmap_RADS 2.46 done
+
+echo 'Finished processing!'
+
+#check RAD reslut cd $outdir/RADs slicesdir imglob *
+
+echo "ALL finished!" ###<deltaTE (in ms)>在序列 protocol 里找，为两个 TE 时间相减，具体见下图###
